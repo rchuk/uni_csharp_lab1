@@ -1,0 +1,49 @@
+﻿<UserControl x:Class="Lab1.Views.UserView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:Lab1.ViewModels"
+             mc:Ignorable="d"
+             d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    </UserControl.Resources>
+    
+    <UserControl.DataContext>
+        <local:UserViewModel />
+    </UserControl.DataContext>
+    
+    <Grid Margin="50">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <DatePicker Grid.Row="0" SelectedDateFormat="Long"
+                    SelectedDate="{Binding User.BirthDate, Mode=TwoWay, ValidatesOnNotifyDataErrors=True}"
+                    DisplayDateStart="1900-01-01" DisplayDateEnd="2024-02-14" 
+                    FirstDayOfWeek="Monday"/>
+        <Grid Grid.Row="1" Visibility="{Binding User.IsValid, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="120"/>
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Label Grid.Row="0" Grid.Column="0" Content="Age:" />
+            <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding User.Age, Mode=OneWay}" VerticalAlignment="Center" />
+            <Label Grid.Row="1" Grid.Column="0" Content="Chinese zodiac sign:" />
+            <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding User.ChineseZodiac, Mode=OneWay}" VerticalAlignment="Center" />
+            <Label Grid.Row="2" Grid.Column="0" Content="Western zodiac sign:" />
+            <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding User.WesternZodiac, Mode=OneWay}" VerticalAlignment="Center" />
+        </Grid>
+        <StackPanel Grid.Row="2" Visibility="{Binding User.IsValid, Converter={StaticResource BooleanToVisibilityConverter}}"
+                    HorizontalAlignment="Right" VerticalAlignment="Bottom">
+            <TextBlock Text="Happy birthday :)" Visibility="{Binding User.IsBirthdayToday, Converter={StaticResource BooleanToVisibilityConverter}}" />
+        </StackPanel>
+    </Grid>
+</UserControl>
